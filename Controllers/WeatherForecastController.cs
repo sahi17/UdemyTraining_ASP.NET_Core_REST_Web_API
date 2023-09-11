@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
@@ -26,6 +27,24 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
         {
             var result = _service.Get();
             return result;
+        }
+
+        [HttpGet("currentDay/{max}")]
+        public IEnumerable<WeatherForecast> Get2([FromQuery]int take, [FromRoute]int max)
+        {
+            var result = _service.Get();
+            return result;
+        }
+
+        [HttpPost]
+        public ActionResult<string> Hello([FromBody] string name)
+        {
+            //HttpContext.Response.StatusCode = 401; //sposób pierwszy
+            //return $"Hello {name}";
+
+            //return StatusCode(401, $"Hello {name}"); //sposób drugi
+
+            return NotFound($"Hello {name}");
         }
     }
 }

@@ -23,5 +23,17 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API
             })
             .ToArray();
         }
+
+        public IEnumerable<WeatherForecast> Get(int resultNumber, int minTemperature, int maxTemperature)
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, resultNumber).Select(index => new WeatherForecast
+                {
+                    Date = DateTime.Now.AddDays(index),
+                    TemperatureC = rng.Next(minTemperature, maxTemperature),
+                    Summary = Summaries[rng.Next(Summaries.Length)]
+                })
+                .ToArray();
+        }
     }
 }

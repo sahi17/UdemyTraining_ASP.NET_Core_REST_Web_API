@@ -46,5 +46,19 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
 
             return NotFound($"Hello {name}");
         }
+
+        [HttpPost("generate/")]
+        public ActionResult<String> Generate([FromQuery] int results, [FromBody] TemperatureRequest request)
+        {
+            if ((results < 0) || (request.Min > request.Max))
+            {
+
+                return BadRequest();
+            }
+
+            var result = _service.Get(results, request.Min, request.Max);
+
+            return Ok(result);
+        }
     }
 }

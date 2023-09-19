@@ -9,7 +9,7 @@ using UdemyTraining_ASP.NET_Core_REST_Web_API.Entities;
 namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20230914124352_Init")]
+    [Migration("20230919104711_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +77,9 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Migrations
 
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactEmail")
                         .HasColumnType("nvarchar(max)");

@@ -28,6 +28,7 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Create = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HasDelivery = table.Column<bool>(type: "bit", nullable: false),

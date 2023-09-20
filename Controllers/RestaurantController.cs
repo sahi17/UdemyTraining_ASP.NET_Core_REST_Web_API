@@ -19,6 +19,18 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
+        [HttpPost]
+        public ActionResult CreateRestourant([FromBody] CreateRestaurantDto dto)
+        {
+            var restourant = _mapper.Map<Restaurant>(dto);
+            _dbContext.Restaurants.Add(restourant);
+            _dbContext.SaveChanges();
+
+            return Created($"/api/restourant/{restourant.Id}", null);
+        }
+
+
         [HttpGet]
         public ActionResult<IEnumerable<RestaurantDto>> GetAll()
         {

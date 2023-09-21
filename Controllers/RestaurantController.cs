@@ -23,6 +23,10 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
         [HttpPost]
         public ActionResult CreateRestourant([FromBody] CreateRestaurantDto dto)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var restourant = _mapper.Map<Restaurant>(dto);
             _dbContext.Restaurants.Add(restourant);
             _dbContext.SaveChanges();

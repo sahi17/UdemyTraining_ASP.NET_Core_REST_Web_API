@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using UdemyTraining_ASP.NET_Core_REST_Web_API.Exceptions;
 
 namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Middleware
 {
@@ -18,6 +19,11 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Middleware
             try
             {
                 await next.Invoke(context);
+            }
+            catch (NotFoundExceptions notFoundExceptions)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(notFoundExceptions.Message);
             }
             catch (Exception e)
             {

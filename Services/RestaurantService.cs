@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UdemyTraining_ASP.NET_Core_REST_Web_API.Entities;
+using UdemyTraining_ASP.NET_Core_REST_Web_API.Exceptions;
 using UdemyTraining_ASP.NET_Core_REST_Web_API.Models;
 
 namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Services
@@ -13,8 +14,8 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Services
         RestaurantDto GetById(int id);
         IEnumerable<RestaurantDto> GetAll();
         int Create(CreateRestaurantDto dto);
-        bool Delete(int id);
-        bool Update(UpdateRestaurantDto dto, int id);
+        void Delete(int id);
+        void Update(UpdateRestaurantDto dto, int id);
     }
 
     public class RestaurantService : IRestaurantService
@@ -29,13 +30,13 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Services
             _mapper = mapper;
             _logger = logger;
         }
-        public bool Update(UpdateRestaurantDto dto, int id)
+        public void Update(UpdateRestaurantDto dto, int id)
         {
             var restaurant = _dbContext
                 .Restaurants
                 .FirstOrDefault(r => r.Id == id);
 
-            if(restaurant is null) return false;
+            if(restaurant is null) throw new NotFoundExceptions("Restaurant not found");
             
             restaurant.Name = dto.Name;
             restaurant.Description = dto.Description;
@@ -43,23 +44,19 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Services
 
             _dbContext.Restaurants.Update(restaurant);
             _dbContext.SaveChanges(); 
-            
-            return true;
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
             _logger.LogError($"Restaurant with id: {id} DELETE action invoked");
             var restaurant = _dbContext
                 .Restaurants
                 .FirstOrDefault(r => r.Id == id);
 
-            if (restaurant is null) return false;
+            if (restaurant is null) throw new NotFoundExceptions("Restaurant not found");
 
             _dbContext.Restaurants.Remove(restaurant);
             _dbContext.SaveChanges();
-
-            return true;
         }
 
         public RestaurantDto GetById(int id)
@@ -70,7 +67,7 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Services
                 .Include(r => r.Dishes)
                 .FirstOrDefault(r => r.Id == id);
 
-            if (restaurant is null) return null;
+            if (restaurant is null) throw new NotFoundExceptions("Restaurant not found");
 
             var result = _mapper.Map<Restaurant, RestaurantDto>(restaurant);
             return result;

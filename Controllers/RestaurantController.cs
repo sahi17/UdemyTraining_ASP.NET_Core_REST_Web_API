@@ -10,6 +10,7 @@ using UdemyTraining_ASP.NET_Core_REST_Web_API.Services;
 namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
 {
     [Route("api/restaurant")]
+    [ApiController]
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantService _restaurantService;
@@ -22,17 +23,8 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateRestaurantDto dto, [FromRoute]int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var isUpdate = _restaurantService.Update(dto, id);
+            _restaurantService.Update(dto, id);
 
-            if (!isUpdate)
-            {
-                return NotFound();
-            }
-            
             return Ok();
             
         }
@@ -40,31 +32,18 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            var isDeleted = _restaurantService.Delete(id);
+            _restaurantService.Delete(id);
 
-            if (isDeleted)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return NotFound();
-            }
+            return NoContent();
         }
 
         [HttpPost]
         public ActionResult CreateRestourant([FromBody] CreateRestaurantDto dto)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var id = _restaurantService.Create(dto);
 
             return Created($"/api/restaurant/{id}", null);
         }
-
 
         [HttpGet]
         public ActionResult<IEnumerable<RestaurantDto>> GetAll()
@@ -78,10 +57,6 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
         {
             var restaurant = _restaurantService.GetById(id);
 
-            if (restaurant is null)
-            {
-                return NotFound();
-            }
             return Ok(restaurant);
         }
     }

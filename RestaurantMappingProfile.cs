@@ -13,6 +13,7 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API
                 .ForMember(m => m.Street, c => c.MapFrom(s => s.Address.Street))
                 .ForMember(m => m.PostalCode, c => c.MapFrom(s => s.Address.PostalCode));
             CreateMap<Dish, DishDto>();
+            CreateMap<CreateDishDto, Dish>();
             CreateMap<CreateRestaurantDto, Restaurant>()
                 .ForMember(r => r.Address, c => c.MapFrom(dto => new Address()
                     {City = dto.City, PostalCode = dto.PostalCode, Street = dto.Street}));

@@ -17,6 +17,22 @@ namespace UdemyTraining_ASP.NET_Core_REST_Web_API.Controllers
             _dishService = dishService;
         }
 
+        [HttpDelete]
+        public ActionResult Delete([FromRoute] int restaurantId)
+        {
+            _dishService.RemoveAll(restaurantId);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{dishId}")]
+        public ActionResult DeletaById([FromRoute]int restaurantId, [FromRoute]int dishId)
+        {
+            _dishService.RemoveById(restaurantId, dishId);
+
+            return NoContent();
+        }
+
         [HttpPost]
         public ActionResult Post([FromRoute] int restaurantId, [FromBody] CreateDishDto dto)
         {
